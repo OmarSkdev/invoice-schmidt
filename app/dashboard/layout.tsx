@@ -9,10 +9,30 @@ import { Button } from "@/components/ui/button";
 import { Menu, User2 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { signOut } from "../utils/auth";
+import prisma from "@/lib/db";
+import { redirect } from "next/navigation";
+
+async function getUsuario(userId: string){
+    const data = await prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+        select: {
+            nombre: true,
+            apellido: true,
+            direccion: true,
+        },
+    });
+
+    if (!data?.nombre || !data?.apellido || !data?.direccion) {
+        redirect("/onboarding");
+    }
+}
 
 export default async function DashboardLayout({ children }:{ children:ReactNode}){
 
-    const sesion = await requiereUser()
+    const sesion = await requiereUser();
+    const data = await getUsuario(sesion.user?.id as string);
     return(
         <>
             <div className="grid min-h-screen w-full md:gird-cols-[220px_1fr]

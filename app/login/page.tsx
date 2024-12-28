@@ -40,7 +40,7 @@ export default async function Login() {
                                  type="email"
                                  placeholder="mail@.com" required></Input>
                             </div>
-                            <SubmitButton />
+                            <SubmitButton text="Login" />
                         </form>
                     </CardContent>
                 </Card>
