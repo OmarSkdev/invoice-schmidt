@@ -1,7 +1,37 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FacturaAcciones } from "./FacturaAcciones";
+import prisma from "@/lib/db";
+import { requiereUser } from "../utils/hooks";
+import { formatMoneda } from "../utils/formatMoneda";
+import { Badge } from "@/components/ui/badge";
 
-export function FacturasListar() {
+async function obtenerData(userId: string) {
+    const data = await prisma.factura.findMany({
+        where: {
+            userId: userId,
+        },
+        select: {
+            id: true,
+            NombreCliente: true,
+            total: true,
+            createdAt: true,
+            estados: true,
+            numeroFactura: true,
+            moneda: true,
+        },
+        orderBy: {
+            createdAt:"desc"
+        },
+    });
+
+    return data;
+}
+
+export async function FacturasListar() {
+
+    const sesion = await requiereUser();
+    const data = await obtenerData(sesion.user?.id as string)
+
     return (
         <Table>
             <TableHeader>
@@ -15,16 +45,30 @@ export function FacturasListar() {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                <TableRow>
-                    <TableCell>#1</TableCell>
-                    <TableCell>Omar Schmidt</TableCell>
-                    <TableCell>$55.000</TableCell>
-                    <TableCell>Pagado</TableCell>
-                    <TableCell>22/11/2024</TableCell>
-                    <TableCell className="text-right">
-                        <FacturaAcciones />
-                    </TableCell>
-                </TableRow>
+                {data.map((factura) => (
+                    <TableRow key={factura.id}>
+                        <TableCell>#{factura.numeroFactura}</TableCell>
+                        <TableCell>{factura.NombreCliente}</TableCell>
+                        <TableCell>
+                            {formatMoneda({
+                                monto: factura.total,
+                                moneda: factura.moneda as any,
+                            })
+                            }
+                        </TableCell>
+                        
+                        <TableCell>
+                            <Badge>{factura.estados}</Badge>                        
+                        </TableCell>
+                        <TableCell>{new Intl.DateTimeFormat("es-CL", {
+                                dateStyle: "medium",
+                            }).format(factura.createdAt)
+                        }</TableCell>
+                        <TableCell className="text-right">
+                            <FacturaAcciones />
+                        </TableCell>
+                    </TableRow>
+                ))}                
             </TableBody>
         </Table>
     )

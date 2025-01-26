@@ -92,7 +92,7 @@ export default async function DashboardLayout({ children }:{ children:ReactNode}
                                         <Link href="/dashboard/facturas">Facturas</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator/>
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
                                         <form 
                                         className="w-full"
                                         action={async () => {
@@ -113,7 +113,7 @@ export default async function DashboardLayout({ children }:{ children:ReactNode}
                 </div>
 
             </div>
-            { children }
+            
         </>
     )
 }

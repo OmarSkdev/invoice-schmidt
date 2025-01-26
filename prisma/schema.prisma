@@ -20,6 +20,7 @@ model User {
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+  facturas      Factura[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -78,4 +79,36 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
  
   @@id([userId, credentialID])
+}
+
+model Factura{
+  id String @id @default(uuid())
+  nombreFactura String
+  total Int
+  estados EstadosFacturas
+  fecha DateTime
+  fechaVenc Int
+  deNombre String
+  deEmail String
+  deDireccion String
+  NombreCliente String
+  EmailCliente String
+  DireccionCliente String
+  moneda String
+  numeroFactura Int
+  nota String?
+
+  itemDescripcion String
+  itemCantidad Int
+  itemTasa Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User User? @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+enum EstadosFacturas {
+  PAGADO
+  PENDIENTE
 }

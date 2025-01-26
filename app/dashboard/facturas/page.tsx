@@ -13,7 +13,7 @@ export default function FacturasRoute() {
                         <CardTitle className="text-2xl font-bold">Título</CardTitle>
                         <CardDescription>mira acá esta tarjeta</CardDescription>
                     </div>
-                    <Link href="" className={buttonVariants()}>
+                    <Link href="/dashboard/facturas/crear" className={buttonVariants()}>
                         <PlusIcon /> Crear Factura
                     </Link>
                 
