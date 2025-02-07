@@ -3,7 +3,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { CheckCircle, DownloadCloudIcon, Mail, MoreHorizontal, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
 
-export function FacturaAcciones() {
+
+interface iAppProps {
+    id: string;
+}
+
+export function FacturaAcciones({ id }: iAppProps) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -13,13 +18,13 @@ export function FacturaAcciones() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuItem asChild>
-                    <Link href="">
+                    <Link href={`/dashboard/facturas/${id}`}>
                         <Pencil className="size-4 mr-2" />Editar
                     </Link>
                 </DropdownMenuItem>
             
                 <DropdownMenuItem asChild>
-                    <Link href="">
+                    <Link href={`/api/factura/${id}`} target="_blank">
                         <DownloadCloudIcon className="size-4 mr-2" />Descargar Factura
                     </Link>
                 </DropdownMenuItem>

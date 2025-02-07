@@ -94,3 +94,67 @@ export async function crearFactura(prevState: any, formData: FormData) {
 
     return redirect("/dashboard/facturas");
 }
+
+export async function editarFactura(prevState: any, formData: FormData) {
+    const sesion = await requiereUser();
+
+    const envio = parseWithZod(formData, {
+        schema: facturaSchema,
+    });
+
+    if(envio.status !== 'success') {
+        return envio.reply();
+    }
+
+    const data = await prisma.factura.update({
+        where: {
+            id: formData.get("id") as string,
+            userId: sesion.user?.id,
+        },
+        data: {
+            DireccionCliente: envio.value.DireccionCliente,
+            EmailCliente: envio.value.EmailCliente,
+            NombreCliente: envio.value.NombreCliente,
+            moneda: envio.value.moneda,
+            fecha: envio.value.fecha,
+            fechaVenc: envio.value.fechaVenc,
+            deDireccion: envio.value.deDireccion,
+            deEmail: envio.value.deEmail,
+            deNombre: envio.value.deNombre,
+            itemDescripcion: envio.value.itemDescripcion,
+            itemCantidad: envio.value.itemCantidad,
+            itemTasa: envio.value.itemTasa,
+            nombreFactura: envio.value.nombreFactura,
+            numeroFactura: envio.value.numeroFactura,
+            estados: envio.value.estados,
+            total: envio.value.total,
+            nota: envio.value.nota,
+            userId: sesion.user?.id
+        },
+    });
+
+    const sender = {
+        email: "hello@demomailtrap.com",
+        name: "Mailtrap Test",
+    };
+
+    emailCliente.send({
+        from: sender,
+        to: [{ email:"omar.sk80@gmail.com"}],
+        template_uuid: "0e17a6dd-83b3-4321-8438-37d2fe95060a",
+        template_variables: {
+        "NombreCliente": envio.value.NombreCliente,
+        "numeroFactura": envio.value.numeroFactura,
+        "fechaVenc": new Intl.DateTimeFormat("es-CL", {
+            dateStyle: "long",
+            }).format(new Date(envio.value.fecha)),              
+        "total": formatMoneda({
+            monto: envio.value.total,
+            moneda: envio.value.moneda as any,
+        }),
+        "link": "Test_Link"
+        }
+    })
+
+    return redirect("/dashboard/facturas");
+}
