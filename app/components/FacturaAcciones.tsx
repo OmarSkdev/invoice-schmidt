@@ -1,7 +1,10 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { CheckCircle, DownloadCloudIcon, Mail, MoreHorizontal, Pencil, Trash } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 
 interface iAppProps {
@@ -9,6 +12,23 @@ interface iAppProps {
 }
 
 export function FacturaAcciones({ id }: iAppProps) {
+
+    const manejoEnvioRecordatorio = () => {
+        toast.promise(
+            fetch(`/api/email/${id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }),
+            {
+                loading: "Enviando recordatorio email...",
+                success: "Recordatorio email enviado exitosamente",
+                error: "Envío de Email recordatorio fallido"
+            }
+        );
+    };
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -28,10 +48,8 @@ export function FacturaAcciones({ id }: iAppProps) {
                         <DownloadCloudIcon className="size-4 mr-2" />Descargar Factura
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                    <Link href="">
-                        <Mail className="size-4 mr-2" />Enviar Email
-                    </Link>
+                <DropdownMenuItem onClick={manejoEnvioRecordatorio}>                    
+                        <Mail className="size-4 mr-2" />Enviar Email                    
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="">
