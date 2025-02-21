@@ -52,7 +52,7 @@ export function FacturaAcciones({ id }: iAppProps) {
                         <Mail className="size-4 mr-2" />Enviar Email                    
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link href="">
+                    <Link href={`/dashboard/facturas/${id}/eliminar`}>
                         <Trash className="size-4 mr-2" />Eliminar Factura
                     </Link>
                 </DropdownMenuItem>

@@ -158,3 +158,16 @@ export async function editarFactura(prevState: any, formData: FormData) {
 
     return redirect("/dashboard/facturas");
 }
+
+export async function EliminarFactura(facturaId: string) {
+    const sesion = await requiereUser();
+
+    const data = await prisma.factura.delete({
+        where: {
+            userId: sesion.user?.id,
+            id: facturaId,
+        },
+    });
+
+    return redirect("/dashboard/facturas");
+}
