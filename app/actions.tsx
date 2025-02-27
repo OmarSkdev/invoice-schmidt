@@ -171,3 +171,17 @@ export async function EliminarFactura(facturaId: string) {
 
     return redirect("/dashboard/facturas");
 }
+
+export async function AccionMarcarPagado(facturaId: string) {
+    const sesion = await requiereUser();
+    const data = await prisma.factura.update({
+        where: {
+            userId: sesion.user?.id,
+            id: facturaId,
+        },
+        data: {
+            estados: "PAGADO",
+        },
+    });
+    return redirect("/dashboard/facturas");
+}

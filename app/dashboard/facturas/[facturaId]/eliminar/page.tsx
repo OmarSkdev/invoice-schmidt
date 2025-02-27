@@ -60,7 +60,7 @@ export default async function EliminarFacturaRuta({
                             "use server";
                             await EliminarFactura(facturaId);
                         }}>
-                        <SubmitButton text="Eliminar Factura" />
+                        <SubmitButton text="Eliminar Factura" variant={"destructive"} />
                     </form>
                 </CardFooter>
             </Card>

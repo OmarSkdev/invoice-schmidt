@@ -9,9 +9,10 @@ import { toast } from "sonner";
 
 interface iAppProps {
     id: string;
+    estados: string;
 }
 
-export function FacturaAcciones({ id }: iAppProps) {
+export function FacturaAcciones({ id, estados }: iAppProps) {
 
     const manejoEnvioRecordatorio = () => {
         toast.promise(
@@ -56,12 +57,13 @@ export function FacturaAcciones({ id }: iAppProps) {
                         <Trash className="size-4 mr-2" />Eliminar Factura
                     </Link>
                 </DropdownMenuItem>
+                {estados !== "PAGADO" && (
                 <DropdownMenuItem asChild>
-                    <Link href="">
+                    <Link href={`/dashboard/facturas/${id}/pagado`}>
                         <CheckCircle className="size-4 mr-2" />Marcar como Pagado
                     </Link>
                 </DropdownMenuItem>
-
+                )}
             </DropdownMenuContent>
         </DropdownMenu>
     )

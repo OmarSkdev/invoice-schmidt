@@ -65,7 +65,7 @@ export async function FacturasListar() {
                             }).format(factura.createdAt)
                         }</TableCell>
                         <TableCell className="text-right">
-                            <FacturaAcciones id={factura.id} />
+                            <FacturaAcciones estados={factura.estados} id={factura.id} />
                         </TableCell>
                     </TableRow>
                 ))}                
