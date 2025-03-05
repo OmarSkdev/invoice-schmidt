@@ -2,14 +2,21 @@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
-const data = [
+/* const data = [
     { fecha: "3 de marzo", monto: 10 },
     { fecha: "5 de marzo", monto: 100 },
     { fecha: "8 de marzo", monto: 500 },
 
-]
+]; */
 
-export function Grafica() {
+interface iAppProps {
+    data: {
+        fecha: string;
+        monto: number;
+    }[];
+}
+
+export function Grafica({ data}: iAppProps) {
     return (
         <ChartContainer
             config={{
@@ -34,5 +41,5 @@ export function Grafica() {
                 </LineChart>
             </ResponsiveContainer>
         </ChartContainer>
-    )
+    );
 }

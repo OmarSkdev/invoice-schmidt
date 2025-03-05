@@ -36,7 +36,22 @@ async function obtenerFacturas(userId: string) {
     },
     {}
   );
-  return agregarDatos;
+  //return agregarDatos;
+
+  //Convert to array and from the object
+  const transformedData = Object.entries(agregarDatos)
+    .map(([fecha, monto]) => ({
+      fecha,
+      monto,
+      originalDate: new Date(fecha + ", " + new Date().getFullYear()),
+    }))
+    .sort((a, b) => a.originalDate.getTime() - b.originalDate.getTime())
+    .map(({ fecha, monto }) => ({
+      fecha,
+      monto,
+    }));
+
+  return transformedData;
 }
 
 export async function FacturaGrafica() {
@@ -54,11 +69,11 @@ export async function FacturaGrafica() {
                     Factura pagadas
                 </CardTitle>
                 <CardDescription>
-                    Facturas pagadas los últimos 30 días
+                    Facturas pagadas los últimos 90 días
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <Grafica />
+                <Grafica data={data} />
             </CardContent>
         </Card>
     )
