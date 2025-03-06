@@ -4,8 +4,12 @@ import prisma from "@/lib/db";
 import { requiereUser } from "../utils/hooks";
 import { formatMoneda } from "../utils/formatMoneda";
 import { Badge } from "@/components/ui/badge";
+import { EstadoVacio } from "./EstadoVacio";
+import { resolve } from "path";
 
 async function obtenerData(userId: string) {
+
+    //await new Promise((resolve) => setTimeout(resolve, 2000));
     const data = await prisma.factura.findMany({
         where: {
             userId: userId,
@@ -33,6 +37,15 @@ export async function FacturasListar() {
     const data = await obtenerData(sesion.user?.id as string)
 
     return (
+        <>
+        {data.length < 1 ? (
+            <EstadoVacio
+                titulo=" No hay facturas"
+                descripcion="cREAR FACTURA PARA COMENZAR"
+                textoboton="Crear Factura"
+                href="/dashboard/facturas/crear"
+            />
+        ) : (
         <Table>
             <TableHeader>
                 <TableRow>
@@ -71,6 +84,8 @@ export async function FacturasListar() {
                 ))}                
             </TableBody>
         </Table>
+        )}
+        </>
     )
     
 }
