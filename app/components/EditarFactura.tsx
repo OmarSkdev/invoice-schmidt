@@ -145,7 +145,7 @@ export function EditarFactura({ data }: iAppProps){
                                 name={fields.NombreCliente.name}
                                 key={fields.NombreCliente.key}
                                 defaultValue={data.NombreCliente}
-                                placeholder="Nombre Cliente"
+                                
                             />
                             <p className="text-red-500 text-sm">{fields.NombreCliente.errors}</p>
                             <Input 
